@@ -1,2 +1,2 @@
 # github-actions-templates
-GIthub actions templates
+Github actions templates
