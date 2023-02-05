@@ -4,7 +4,7 @@ on: push
 
 jobs:
 
-  linter:
+  linter_terraform:
     runs-on: ubuntu-latest
     steps:
     - name: CHECKING OUT CODE
@@ -19,3 +19,22 @@ jobs:
       working-directory: ./iac/terraform
       run: terraform fmt -check -recursive
 
+  linter_ansible:
+    runs-on: ubuntu-latest
+    steps:
+    - name: CHECKING OUT CODE
+      uses: actions/checkout@v3
+      with:
+          fetch-depth: 0
+
+    - name: RUNNING ANSIBLE LINT
+      uses: ansible/ansible-lint-action@v6
+      with:
+        path: "iac/ansible/"
+
+  linters_done:
+    needs: [linter_terraform,linter_ansible]
+    runs-on: ubuntu-latest
+    steps:
+      - name: DONE
+        run: exit 0
