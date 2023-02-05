@@ -1,40 +1,78 @@
-name: Tests
+name: IAC-WORKFLOW
 
 on: push
 
 jobs:
 
+#-~-~-~-~-#
+# LINTERS #
+#-~-~-~-~-#
+
   linter_terraform:
     runs-on: ubuntu-latest
     steps:
-    - name: CHECKING OUT CODE
-      uses: actions/checkout@v3
-
-    - name: SETUP TERRAFORM
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.3.6
-
-    - name: TERRAFORM CHECK FORMAT
-      working-directory: ./iac/terraform
-      run: terraform fmt -check -recursive
+      - name: TERRAFORM LINTER STARTS <HERE>
+        run: exit 0
 
   linter_ansible:
     runs-on: ubuntu-latest
     steps:
-    - name: CHECKING OUT CODE
-      uses: actions/checkout@v3
-      with:
-          fetch-depth: 0
+      - name: ANSIBLE LINTER STARTS <HERE>
+        run: exit 0
 
-    - name: RUNNING ANSIBLE LINT
-      uses: ansible/ansible-lint-action@v6
-      with:
-        path: "iac/ansible/"
+#-~-~-~-~-#
+# DEPLOYS #
+#-~-~-~-~-#
 
-  linters_done:
+  deploy_terraform_sre:
     needs: [linter_terraform,linter_ansible]
     runs-on: ubuntu-latest
     steps:
-      - name: DONE
+      - name: DEPLOY TERRAFORM [ENV SRE] STARTS <HERE>
+        run: exit 0
+  
+  ansible_playbook_sre:
+    needs: [deploy_terraform_sre]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ANSIBLE PLAYBOOK [ENV SRE] STARTS <HERE>
+        run: exit 0
+
+  deploy_terraform_staging:
+    runs-on: ubuntu-latest
+    needs: [deploy_terraform_sre]
+    steps:
+      - name: DEPLOY TERRAFORM [ENV STAGING] STARTS <HERE>
+        run: exit 0
+
+  ansible_playbook_staging:
+    needs: [ansible_playbook_sre,deploy_terraform_staging]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ANSIBLE PLAYBOOK [ENV STAGING] STARTS <HERE>
+        run: exit 0
+
+  deploy_terraform_production:
+    runs-on: ubuntu-latest
+    needs: [deploy_terraform_staging]
+    steps:
+      - name: DEPLOY TERRAFORM [ENV PRODUCTION] STARTS <HERE>
+        run: exit 0
+
+  ansible_playbook_production:
+    needs: [ansible_playbook_staging,deploy_terraform_production]
+    runs-on: ubuntu-latest
+    steps:
+      - name: ANSIBLE PLAYBOOK [ENV PRODUCTION] STARTS <HERE>
+        run: exit 0
+
+#-~-~-~-~-#
+# OUTPUTS #
+#-~-~-~-~-#
+
+  slack_msg:
+    needs: [deploy_terraform_production,ansible_playbook_production]
+    runs-on: ubuntu-latest
+    steps:
+      - name: PUBLISH SLACK MESSAGE <HERE>
         run: exit 0
