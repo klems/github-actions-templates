@@ -50,11 +50,18 @@ jobs:
 # APP IMAGE #
 #-~-~-~-~-~-#
 
-  app_image:
+  app_image_staging:
     needs: [test_kind_01,test_kind_02,test_kind_03,test_kind_04]
     runs-on: ubuntu-latest
     steps:
-      - name: BUILD / TAG / UPLOAD IMAGE <HERE>
+      - name: BUILD / TAG / UPLOAD STAGING IMAGE <HERE>
+        run: exit 0
+
+  app_image_production:
+    needs: [test_kind_01,test_kind_02,test_kind_03,test_kind_04]
+    runs-on: ubuntu-latest
+    steps:
+      - name: BUILD / TAG / UPLOAD PRODUCTION IMAGE <HERE>
         run: exit 0
 
 #-~-~-~-~-#
@@ -62,14 +69,14 @@ jobs:
 #-~-~-~-~-#
 
   deploy_app_staging:
-    needs: [app_image]
+    needs: [app_image_staging]
     runs-on: ubuntu-latest
     steps:
       - name: DEPLOY APP_IMAGE [ENV STAGING] STARTS <HERE>
         run: exit 0
 
   deploy_app_production:
-    needs: [deploy_app_staging,app_image]
+    needs: [app_image_production,deploy_app_staging]
     runs-on: ubuntu-latest
     steps:
       - name: DEPLOY APP_IMAGE [ENV PRODUCTION] STARTS <HERE>
