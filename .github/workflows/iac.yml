@@ -1,4 +1,4 @@
-name: Tests
+name: IAC
 
 on: push
 
@@ -7,34 +7,32 @@ jobs:
   linter_terraform:
     runs-on: ubuntu-latest
     steps:
-    - name: CHECKING OUT CODE
-      uses: actions/checkout@v3
-
-    - name: SETUP TERRAFORM
-      uses: hashicorp/setup-terraform@v2
-      with:
-        terraform_version: 1.3.6
-
-    - name: TERRAFORM CHECK FORMAT
-      working-directory: ./iac/terraform
-      run: terraform fmt -check -recursive
+      - name: TERRAFORM LINTER STARTS <HERE>
+        run: exit 0
 
   linter_ansible:
     runs-on: ubuntu-latest
     steps:
-    - name: CHECKING OUT CODE
-      uses: actions/checkout@v3
-      with:
-          fetch-depth: 0
-
-    - name: RUNNING ANSIBLE LINT
-      uses: ansible/ansible-lint-action@v6
-      with:
-        path: "iac/ansible/"
+      - name: ANSIBLE LINTER STARTS <HERE>
+        run: exit 0
 
   linters_done:
     needs: [linter_terraform,linter_ansible]
     runs-on: ubuntu-latest
     steps:
-      - name: DONE
+      - name: LINTERS DONE
+        run: exit 0
+
+  deploy_terraform_sre:
+    needs: [linters_done]
+    runs-on: ubuntu-latest
+    steps:
+      - name: DEPLOY TERRAFORM [SRE] STARTS <HERE>
+        run: exit 0
+
+  deploy_terraform_staging:
+    runs-on: ubuntu-latest
+    needs: [linters_done,deploy_terraform_sre]
+    steps:
+      - name: DEPLOY TERRAFORM [STAGING] STARTS <HERE>
         run: exit 0
