@@ -20,19 +20,12 @@ jobs:
       - name: ANSIBLE LINTER STARTS <HERE>
         run: exit 0
 
-  meta_linters:
-    needs: [linter_terraform,linter_ansible]
-    runs-on: ubuntu-latest
-    steps:
-      - name: META LINTERS
-        run: exit 0
-
 #-~-~-~-~-#
 # DEPLOYS #
 #-~-~-~-~-#
 
   deploy_terraform_sre:
-    needs: [meta_linters]
+    needs: [linter_terraform,linter_ansible]
     runs-on: ubuntu-latest
     steps:
       - name: DEPLOY TERRAFORM [ENV SRE] STARTS <HERE>
@@ -52,19 +45,12 @@ jobs:
       - name: DEPLOY TERRAFORM [ENV PRODUCTION] STARTS <HERE>
         run: exit 0
 
-  meta_deploys:
-    needs: [deploy_terraform_sre,deploy_terraform_staging,deploy_terraform_production]
-    runs-on: ubuntu-latest
-    steps:
-      - name: META DEPLOYS
-        run: exit 0
-
 #-~-~-~-~-#
 # OUTPUTS #
 #-~-~-~-~-#
 
   slack_msg:
-    needs: [meta_deploys]
+    needs: [deploy_terraform_sre,deploy_terraform_staging,deploy_terraform_production]
     runs-on: ubuntu-latest
     steps:
       - name: PUBLISH SLACK MESSAGE <HERE>
