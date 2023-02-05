@@ -46,7 +46,7 @@ jobs:
         run: exit 0
 
   ansible_playbook_staging:
-    needs: [deploy_terraform_staging]
+    needs: [ansible_playbook_sre,deploy_terraform_staging]
     runs-on: ubuntu-latest
     steps:
       - name: ANSIBLE PLAYBOOK [ENV STAGING] STARTS <HERE>
@@ -60,7 +60,7 @@ jobs:
         run: exit 0
 
   ansible_playbook_production:
-    needs: [deploy_terraform_production]
+    needs: [ansible_playbook_staging,deploy_terraform_production]
     runs-on: ubuntu-latest
     steps:
       - name: ANSIBLE PLAYBOOK [ENV PRODUCTION] STARTS <HERE>
