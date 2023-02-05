@@ -4,6 +4,10 @@ on: push
 
 jobs:
 
+#-~-~-~-~-#
+# LINTERS #
+#-~-~-~-~-#
+
   linter_terraform:
     runs-on: ubuntu-latest
     steps:
@@ -22,6 +26,10 @@ jobs:
     steps:
       - name: LINTERS DONE
         run: exit 0
+
+#-~-~-~-~-#
+# DEPLOYS #
+#-~-~-~-~-#
 
   deploy_terraform_sre:
     needs: [linters_done]
