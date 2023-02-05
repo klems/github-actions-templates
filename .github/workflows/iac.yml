@@ -30,26 +30,12 @@ jobs:
     steps:
       - name: DEPLOY TERRAFORM [ENV SRE] STARTS <HERE>
         run: exit 0
-  
-  ansible_playbook_sre:
-    needs: [deploy_terraform_sre]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ANSIBLE PLAYBOOK [ENV SRE] STARTS <HERE>
-        run: exit 0
 
   deploy_terraform_staging:
     runs-on: ubuntu-latest
     needs: [deploy_terraform_sre]
     steps:
       - name: DEPLOY TERRAFORM [ENV STAGING] STARTS <HERE>
-        run: exit 0
-
-  ansible_playbook_staging:
-    needs: [ansible_playbook_sre,deploy_terraform_staging]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ANSIBLE PLAYBOOK [ENV STAGING] STARTS <HERE>
         run: exit 0
 
   deploy_terraform_production:
@@ -59,19 +45,12 @@ jobs:
       - name: DEPLOY TERRAFORM [ENV PRODUCTION] STARTS <HERE>
         run: exit 0
 
-  ansible_playbook_production:
-    needs: [ansible_playbook_staging,deploy_terraform_production]
-    runs-on: ubuntu-latest
-    steps:
-      - name: ANSIBLE PLAYBOOK [ENV PRODUCTION] STARTS <HERE>
-        run: exit 0
-
 #-~-~-~-~-#
 # OUTPUTS #
 #-~-~-~-~-#
 
   slack_msg:
-    needs: [deploy_terraform_production,ansible_playbook_production]
+    needs: [deploy_terraform_sre,deploy_terraform_staging,deploy_terraform_production]
     runs-on: ubuntu-latest
     steps:
       - name: PUBLISH SLACK MESSAGE <HERE>
