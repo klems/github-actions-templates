@@ -20,19 +20,12 @@ jobs:
       - name: ANSIBLE LINTER STARTS <HERE>
         run: exit 0
 
-  linters_done:
-    needs: [linter_terraform,linter_ansible]
-    runs-on: ubuntu-latest
-    steps:
-      - name: LINTERS DONE
-        run: exit 0
-
 #-~-~-~-~-#
 # DEPLOYS #
 #-~-~-~-~-#
 
   deploy_terraform_sre:
-    needs: [linters_done]
+    needs: [linter_terraform,linter_ansible]
     runs-on: ubuntu-latest
     steps:
       - name: DEPLOY TERRAFORM [ENV SRE] STARTS <HERE>
@@ -73,19 +66,12 @@ jobs:
       - name: ANSIBLE PLAYBOOK [ENV PRODUCTION] STARTS <HERE>
         run: exit 0
 
-  deploys_done:
-    needs: [deploy_terraform_production,ansible_playbook_production]
-    runs-on: ubuntu-latest
-    steps:
-      - name: DEPLOYS DONE
-        run: exit 0
-
 #-~-~-~-~-#
-#OUTPUTS #
+# OUTPUTS #
 #-~-~-~-~-#
 
   slack_msg:
-    needs: [deploys_done]
+    needs: [deploy_terraform_production,ansible_playbook_production]
     runs-on: ubuntu-latest
     steps:
       - name: PUBLISH SLACK MESSAGE <HERE>
