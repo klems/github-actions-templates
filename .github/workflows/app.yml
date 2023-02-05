@@ -1,0 +1,76 @@
+name: APP-WORKFLOW
+
+on: push
+
+jobs:
+
+#-~-~-~-~#
+# LINTER #
+#-~-~-~-~#
+
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: LINTER STARTS <HERE>
+        run: exit 0
+
+#-~-~-~-#
+# TESTS #
+#-~-~-~-#
+
+  test_kind_01:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: TEST KIND 01 STARTS <HERE>
+        run: exit 0
+
+  test_kind_02:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: TEST KIND 02 STARTS <HERE>
+        run: exit 0
+
+  test_kind_03:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: TEST KIND 03 STARTS <HERE>
+        run: exit 0
+
+  test_kind_04:
+    needs: [linter]
+    runs-on: ubuntu-latest
+    steps:
+      - name: TEST KIND 04 STARTS <HERE>
+        run: exit 0
+
+  meta_tests:
+    needs: [test_kind_01,test_kind_02,test_kind_03,test_kind_04]
+    runs-on: ubuntu-latest
+    steps:
+      - name: META TESTS
+        run: exit 0
+
+#-~-~-~-~-~-#
+# APP IMAGE #
+#-~-~-~-~-~-#
+
+  app_image:
+    needs: [meta_tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: BUILD / TAG / UPLOAD IMAGE <HERE>
+        run: exit 0
+
+#-~-~-~-~-#
+# DEPLOYS #
+#-~-~-~-~-#
+
+  deploy_app_staging:
+    needs: [app_image]
+    runs-on: ubuntu-latest
+    steps:
+      - name: DEPLOY APP_IMAGE [ENV STAGING] STARTS <HERE>
+        run: exit 0
